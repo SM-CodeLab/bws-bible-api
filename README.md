@@ -5,12 +5,19 @@ Le projet API Bible (Bws.Bible.Api) est un **web service** REST qui permet d'exp
 
 ## Pour commencer
 
+//TODO
+
 ### Pré-requis
+
+//TODO
 
 ### Installation
 
+//TODO
 
 ## Démarrage
+
+//TODO
 
 
 ## Fabriqué avec
@@ -40,4 +47,7 @@ Pour en savoir plus sur les auteurs du projet, c'est ici !
 
 ## License
 
-Ce projet est sous ``licence Creative Commons BY-NC-ND`` - voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations.
+Ce projet est distribué sous deux régimes de droits distincts :
+- **Code source : ** ``MIT License`` -
+- **Données et contenus : ** ``Licence Creative Commons BY-NC-ND`` - 
+Voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations.

@@ -4,8 +4,7 @@
 
 1. Assurez-vous que toutes les dépendances d'installation ou de construction sont exclus des modifications de la "pull request" (exemples : packages, répertoires ``bin/`` et ``obj/`` ...)
 2. Mettez à jour le fichier README.md avec les détails des modifications apportées à la Web API (exemples : modifications du contrat de données, de nouvelles clés de configuration...)
-3. Augmentez les numéros de version dans les fichiers ``//TODO`` et le README.md à la nouvelle version que cette demande d'extraction représenterait. Le schéma de version que nous utilisons est SemVer.
-4. Vous pouvez pousser les modifications de votre "pull request" une fois que vous avez obtenu l'approbation de l'un des concepteurs. En cas de refus, le concepteur laissera des commentaires dans votre "pull request" qu'il faudra prendre en compte avant d'envoyer une deuxième "pull request".
+3. Vous pouvez pousser les modifications de votre "pull request" une fois que vous avez obtenu l'approbation de l'un des responsables. En cas de refus, le reviewer laissera des commentaires dans votre "pull request" qu'il faudra prendre en compte avant d'envoyer une autre "pull request".
 
 ## Code de conduite
 
