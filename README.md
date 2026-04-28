@@ -42,12 +42,13 @@ Si vous souhaitez contribuer, lisez le fichier [CONTRIBUTING.md](./CONTRIBUTING.
 ## Auteurs
 Pour en savoir plus sur les auteurs du projet, c'est ici !
 
-* **Samuel MEYER** - conception et développement initial du projet - [www.samuel-meyer.fr](https://www.samuel-meyer.fr)
+- **Samuel MEYER** - conception et développement initial du projet - [www.samuel-meyer.fr](https://www.samuel-meyer.fr)
 
 
 ## License
 
 Ce projet est distribué sous deux régimes de droits distincts :
-- **Code source :** ``MIT License`` -
-- **Données et contenus :** ``Licence Creative Commons BY-NC-ND`` - 
+- **Code source :** ``MIT License``
+- **Données et contenus :** ``Licence Creative Commons BY-NC-ND``
+
 Voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations.
