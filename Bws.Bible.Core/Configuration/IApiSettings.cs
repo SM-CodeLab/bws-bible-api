@@ -2,17 +2,17 @@
 {
     public interface IApiSettings
     {
-        string Name { get; set; }
-        string Version { get; set; }
-        string BaseUrl { get; set; }
-        string Environment { get; set; }
-        bool GenerateNavigationLinks { get; set; }
-        bool GenerateResponseTime { get; set; }
-        string RegexBibleIdentifier { get; set; }
-        short SearchWordsMinLength { get; set; }
-        short SearchWordsMaxLength { get; set; }
-        bool SearchPaginationEnabled { get; set; }
-        short SearchPaginationVersesPerPage { get; set; }
-        bool CompareInterlinearVersesEnabled { get; set; }
+        string Name { get; init; }
+        string Version { get; init; }
+        string BaseUrl { get; init; }
+        string Environment { get; init; }
+        bool GenerateNavigationLinks { get; init; }
+        bool GenerateResponseTime { get; init; }
+        string RegexBibleIdentifier { get; init; }
+        short SearchWordsMinLength { get; init; }
+        short SearchWordsMaxLength { get; init; }
+        bool SearchPaginationEnabled { get; init; }
+        short SearchPaginationVersesPerPage { get; init; }
+        bool CompareInterlinearVersesEnabled { get; init; }
     }
 }

@@ -2,9 +2,9 @@
 {
     public interface IInfrastructureSettings
     {
-        string StoragePath { get; set; }
-        string BibleFileExtension { get; set; }
-        string DelimiterSeparatedValues { get; set; }
-        bool LoadBiblesAtStartup { get; set; }
+        string StoragePath { get; init; }
+        string BibleFileExtension { get; init; }
+        string DelimiterSeparatedValues { get; init; }
+        bool LoadBiblesAtStartup { get; init; }
     }
 }

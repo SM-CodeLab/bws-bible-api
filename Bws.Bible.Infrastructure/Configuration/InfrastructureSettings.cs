@@ -2,11 +2,11 @@
 
 namespace Bws.Bible.Infrastructure.Configuration
 {
-    public class InfrastructureSettings : IInfrastructureSettings
+    public record InfrastructureSettings : IInfrastructureSettings
     {
-        public string StoragePath { get; set; }
-        public string BibleFileExtension { get; set; }
-        public string DelimiterSeparatedValues { get; set; }
-        public bool LoadBiblesAtStartup { get; set; }
+        public required string StoragePath { get; init; }
+        public required string BibleFileExtension { get; init; }
+        public required string DelimiterSeparatedValues { get; init; }
+        public bool LoadBiblesAtStartup { get; init; }
     }
 }
