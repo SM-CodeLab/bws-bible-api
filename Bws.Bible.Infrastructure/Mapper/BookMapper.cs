@@ -27,18 +27,21 @@ namespace Bws.Bible.Infrastructure.Mapper
 
         public static BookDto ToBookDto(this BookData bookData, BibleData bibleData, bool withVerses = false)
         {
+            IEnumerable<VerseData> verses = new List<VerseData>();
+            if (bibleData != null && withVerses)
+            {
+                verses = bibleData.Verses.Where(v => v.IdBook == bookData.IdBook);
+            }
+
             var bookDto = new BookDto()
             {
                 IdBook = bookData.IdBook,
                 Title = bookData.Title,
                 CountChapters = bookData.Statistics.CountChapters,
-                CountVerses = bookData.Statistics.CountVerses
+                CountVerses = bookData.Statistics.CountVerses,
+                Verses = verses.ToVerseDto().ToList()
             };
-            if (bibleData != null && withVerses)
-            {
-                var verses = bibleData.Verses.Where(v => v.IdBook == bookData.IdBook);
-                bookDto.Verses = verses.ToVerseDto().ToList();
-            }
+            
             return bookDto;
         }
 

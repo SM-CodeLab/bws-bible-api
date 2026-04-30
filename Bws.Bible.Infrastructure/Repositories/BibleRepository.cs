@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Microsoft.Extensions.Logging;
 using Bws.Bible.Core.Configuration;
 using Bws.Bible.Core.Domain;

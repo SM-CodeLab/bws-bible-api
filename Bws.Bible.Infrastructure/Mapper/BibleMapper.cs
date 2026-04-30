@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Bws.Bible.Core.Domain;
+﻿using Bws.Bible.Core.Domain;
 using Bws.Bible.Core.Domain.Enums;
 using Bws.Bible.Infrastructure.Data;
 
@@ -11,26 +8,30 @@ namespace Bws.Bible.Infrastructure.Mapper
     {
         public static BibleDto ToBibleDto(this BibleData bibleData, bool withVerses = false)
         {
-            var bibleDto = new BibleDto();
-            bibleDto.Id = bibleData.Id;
-            bibleDto.Name = bibleData.Name;
             ELanguage language = ELanguage.Unknown;
             Enum.TryParse(bibleData.Language, true, out language);
-            bibleDto.Language = language;
-            bibleDto.Translator = bibleData.Translator;
-            bibleDto.ReleaseYear = bibleData.ReleaseYear;
-            bibleDto.CountBooks = bibleData.Statistics.CountBooks;
-            bibleDto.CountVerses = bibleData.Statistics.CountVerses;
 
-            if (bibleData.Verses != null && bibleData.Verses.Any())
+            bool bibleDataHasVerses = bibleData.Verses != null && bibleData.Verses.Any();
+
+            short countVerses = bibleData.Statistics.CountVerses;
+            if(bibleDataHasVerses)
+                countVerses = (short)bibleData.Verses.Count;
+
+            var books = bibleDataHasVerses 
+                ? bibleData.Books.ToBookDto(bibleData, withVerses).ToList().AsReadOnly() 
+                : bibleData.Books.ToBookDto().ToList().AsReadOnly();
+
+            var bibleDto = new BibleDto()
             {
-                bibleDto.CountVerses = (short)bibleData.Verses.Count;
-                bibleDto.Books.AddRange(bibleData.Books.ToBookDto(bibleData, withVerses));
-            }
-            else
-            {
-                bibleDto.Books.AddRange(bibleData.Books.ToBookDto());
-            }
+                Id = bibleData.Id,
+                Name = bibleData.Name,
+                Language = language,
+                Translator = bibleData.Translator,
+                ReleaseYear = bibleData.ReleaseYear,
+                CountBooks = bibleData.Statistics.CountBooks,
+                CountVerses = countVerses,
+                Books = books
+            };
 
             return bibleDto;
         }

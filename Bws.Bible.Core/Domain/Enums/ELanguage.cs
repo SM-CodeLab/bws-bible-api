@@ -29,5 +29,20 @@
         /// English - Anglais
         /// </summary>
         EN = 4,
+
+        /// <summary>
+        /// German - Allemand
+        /// </summary>
+        DE = 5,
+
+        /// <summary>
+        /// Spanish - Espagnol
+        /// </summary>
+        ES = 6,
+
+        /// <summary>
+        /// Italian - Italien
+        /// </summary>
+        IT = 7,
     }
 }

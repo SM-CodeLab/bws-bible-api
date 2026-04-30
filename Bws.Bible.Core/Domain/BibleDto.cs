@@ -1,59 +1,50 @@
-﻿using System.Collections.Generic;
-using Bws.Bible.Core.Domain.Enums;
+﻿using Bws.Bible.Core.Domain.Enums;
 
 namespace Bws.Bible.Core.Domain
 {
     /// <summary>
     /// Bible (Data Transfer Object)
     /// </summary>
-    public class BibleDto
+    public record BibleDto
     {
         /// <summary>
         /// Identifiant de la Bible
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; init; }
 
         /// <summary>
         /// Nom ou titre de la Bible
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; init; }
 
         /// <summary>
         /// Langue
         /// </summary>
-        public ELanguage Language { get; set; }
+        public ELanguage Language { get; init; }
 
         /// <summary>
         /// Traducteur (personne physique)
         /// </summary>
-        public string Translator { get; set; }
+        public string Translator { get; init; }
 
         /// <summary>
         /// Date de parution, de publication
         /// </summary>
-        public short ReleaseYear { get; set; }
+        public short ReleaseYear { get; init; }
 
         /// <summary>
         /// Livres de la Bible
         /// </summary>
-        public List<BookDto> Books { get; set; }
+        public IReadOnlyList<BookDto> Books { get; init; } = new List<BookDto>();
 
         /// <summary>
         /// Nombre de livres total dans cette version de la Bible
         /// </summary>
-        public short CountBooks { get; set; }
+        public short CountBooks { get; init; }
 
         /// <summary>
         /// Nombre de versets total dans cette version de la Bible
         /// </summary>
-        public short CountVerses { get; set; }
-
-        /// <summary>
-        /// Constructeur par défaut
-        /// </summary>
-        public BibleDto()
-        {
-            Books = new List<BookDto>();
-        }
+        public short CountVerses { get; init; }
     }
 }
