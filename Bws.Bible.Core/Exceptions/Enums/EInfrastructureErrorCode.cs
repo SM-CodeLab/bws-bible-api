@@ -1,8 +1,7 @@
-﻿namespace Bws.Bible.Core.Exceptions.Enums
+﻿namespace Bws.Bible.Core.Exceptions.Enums;
+
+public enum EInfrastructureErrorCode
 {
-    public enum EInfrastructureErrorCode
-    {
-        LoadBibleFull,
-        LoadBibleHeader
-    }
+    LoadBibleFull,
+    LoadBibleHeader
 }

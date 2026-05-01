@@ -1,23 +1,22 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Bws.Bible.Api.Middlewares
+namespace Bws.Bible.Api.Middlewares;
+
+public class BwsCorsMiddleware
 {
-    public class BwsCorsMiddleware
+    private readonly RequestDelegate _next;
+
+    public BwsCorsMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public BwsCorsMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
+    public Task Invoke(HttpContext context)
+    {
+        context.Response.Headers["Access-Control-Allow-Origin"] = "*";
+        context.Response.Headers["Access-Control-Allow-Methods"] = "GET, OPTIONS";
 
-        public Task Invoke(HttpContext context)
-        {
-            context.Response.Headers["Access-Control-Allow-Origin"] = "*";
-            context.Response.Headers["Access-Control-Allow-Methods"] = "GET, OPTIONS";
-
-            return _next(context);
-        }
+        return _next(context);
     }
 }

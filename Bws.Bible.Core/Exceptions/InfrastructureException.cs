@@ -1,12 +1,10 @@
-﻿using System;
-using Bws.Bible.Core.Exceptions.Enums;
+﻿using Bws.Bible.Core.Exceptions.Enums;
 
-namespace Bws.Bible.Core.Exceptions
+namespace Bws.Bible.Core.Exceptions;
+
+public class InfrastructureException : Exception
 {
-    public class InfrastructureException : Exception
-    {
-        public EInfrastructureErrorCode ErrorCode;
+    public EInfrastructureErrorCode ErrorCode;
 
-        public string ErrorMessage;
-    }
+    public required string ErrorMessage;
 }

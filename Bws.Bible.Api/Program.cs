@@ -1,3 +1,4 @@
+using Bws.Bible.Api;
 using Bws.Bible.Api.Configuration;
 using Bws.Bible.Api.Middlewares;
 using Bws.Bible.Core.Configuration;
@@ -5,11 +6,14 @@ using Bws.Bible.Core.Repositories;
 using Bws.Bible.Infrastructure.Configuration;
 using Bws.Bible.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi;
 using System;
+using System.IO;
 using System.Text.Json.Serialization;
 
 static ApiSettings GetApiSettings(IConfiguration configuration)
@@ -37,13 +41,17 @@ static InfrastructureSettings GetInfrastructureSettings(IConfiguration configura
     {
         StoragePath = configuration["Infrastructure:StoragePath"],
         BibleFileExtension = configuration["Infrastructure:BibleFileExtension"],
+        BibleFileForHealthCheck = configuration["Infrastructure:BibleFileForHealthCheck"],
         DelimiterSeparatedValues = configuration["Infrastructure:DelimiterSeparatedValues"],
         LoadBiblesAtStartup = bool.Parse(configuration["Infrastructure:LoadBiblesAtStartup"])
     };
 }
 
-// Bible API builder
+// Préparation du builder de l'application
 var builder = WebApplication.CreateBuilder(args);
+
+var infrastructureSettings = GetInfrastructureSettings(builder.Configuration);
+var apiSettings = GetApiSettings(builder.Configuration);
 
 //Cross-Origin (CORS)
 //builder.Services.AddCors(options =>
@@ -56,6 +64,10 @@ var builder = WebApplication.CreateBuilder(args);
 //    });
 //});
 
+builder.Services.AddHealthChecks()
+    .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "liveness" }) // Liveness : Vérifie si l'api répond                                                                  
+    .AddCheck("storage-check", new CriticalFileHealthCheck(Path.Combine(infrastructureSettings.StoragePath, infrastructureSettings.BibleFileForHealthCheck)), tags: new[] { "readiness" }); // Readiness : Vérifie l'accès aux données
+
 // Configuration des services (extrait de ConfigureServices)
 builder.Services.AddControllers()
     .AddJsonOptions(options => {
@@ -67,8 +79,8 @@ builder.Services.AddControllers()
 builder.Services.AddSingleton<IBibleRepository, BibleRepository>();
 
 // Configuration
-builder.Services.AddSingleton<IInfrastructureSettings>(GetInfrastructureSettings(builder.Configuration));
-builder.Services.AddSingleton<IApiSettings>(GetApiSettings(builder.Configuration));
+builder.Services.AddSingleton<IInfrastructureSettings>(infrastructureSettings);
+builder.Services.AddSingleton<IApiSettings>(apiSettings);
 
 // Swagger
 builder.Services.AddSwaggerGen(c => {
@@ -92,6 +104,7 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
+// Build de l'application
 var app = builder.Build();
 
 // Configuration du pipeline (extrait de Configure)
@@ -118,7 +131,20 @@ app.UseCors();
 app.UseMiddleware<BwsCorsMiddleware>();
 app.UseAuthorization();
 
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = r => r.Tags.Contains("liveness")
+});
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = r => r.Tags.Contains("readiness")
+});
+
 app.MapControllers();
+
+//app.UseMetricServer(); // Expose /metrics
+//app.UseHttpMetrics();   // Capture les stats HTTP (latence, codes 200/500)
 
 // Initialisation du repository
 app.Services.GetService<IBibleRepository>();

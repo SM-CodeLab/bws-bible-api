@@ -1,16 +1,15 @@
 ﻿using Xunit;
 using Bws.Bible.Infrastructure.Data;
 
-namespace Bws.Bible.Api.Tests.Infrastructure.Data
-{
-    public class BookDataTests
-    {
-        [Fact]
-        public void TestBookDataConstructor()
-        {
-            var bible = new BookData();
+namespace Bws.Bible.Api.Tests.Infrastructure.Data;
 
-            Assert.NotNull(bible.Statistics);
-        }
+public class BookDataTests
+{
+    [Fact]
+    public void TestBookDataConstructor()
+    {
+        var bible = new BookData();
+
+        Assert.NotNull(bible.Statistics);
     }
 }

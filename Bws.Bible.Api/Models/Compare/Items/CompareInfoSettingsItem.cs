@@ -1,19 +1,18 @@
 ﻿using Bws.Bible.Core.Configuration;
 
-namespace Bws.Bible.Api.Models.Compare.Items
+namespace Bws.Bible.Api.Models.Compare.Items;
+
+/// <summary>
+/// Paramètres de l'API "/Compare"
+/// </summary>
+public class CompareInfoSettingsItem
 {
     /// <summary>
-    /// Paramètres de l'API "/Compare"
+    /// Constructeur par défaut
     /// </summary>
-    public class CompareInfoSettingsItem
+    /// <param name="settings">Paramètres de l'API</param>
+    public CompareInfoSettingsItem(IApiSettings settings)
     {
-        /// <summary>
-        /// Constructeur par défaut
-        /// </summary>
-        /// <param name="settings">Paramètres de l'API</param>
-        public CompareInfoSettingsItem(IApiSettings settings)
-        {
-            
-        }
+        
     }
 }
