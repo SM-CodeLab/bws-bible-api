@@ -8,7 +8,7 @@ using Bws.Bible.Core.Repositories;
 using Bws.Bible.Api.Models.Search;
 using Bws.Bible.Api.Models.Search.Items;
 
-namespace Bws.Bible.Api.Controllers.Front;
+namespace Bws.Bible.Api.Controllers;
 
 /// <summary>
 /// Rechercher dans la Bible
@@ -35,7 +35,7 @@ public class SearchController : BaseApiController
 
         var response = new SearchInfoResponse(apiUrl, ApiSettings);
 
-        return new JsonResult(response);
+        return response.ToJsonResult();
     }
 
     /// <summary>
@@ -55,12 +55,12 @@ public class SearchController : BaseApiController
         var dto = BibleRepository.GetVersesBySearchingWords(words, bible);
         if (dto == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         SearchWordsResponse response = GenerateSearchWordsResponse(dto, words);
 
-        return response.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return response.ToJsonResult();
     }
 
     /// <summary>
@@ -82,12 +82,12 @@ public class SearchController : BaseApiController
         var dto = BibleRepository.GetVersesBySearchingWords(words, bible, idBook);
         if (dto == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         SearchWordsResponse response = GenerateSearchWordsResponse(dto, words);
 
-        return response.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return response.ToJsonResult();
     }
 
     /// <summary>
@@ -110,12 +110,12 @@ public class SearchController : BaseApiController
         var dto = BibleRepository.GetVersesBySearchingWords(words, bible, idBook, chapter);
         if (dto == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         SearchWordsResponse response = GenerateSearchWordsResponse(dto, words);
 
-        return response.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return response.ToJsonResult();
     }
 
     /// <summary>
@@ -140,12 +140,12 @@ public class SearchController : BaseApiController
         var dto = BibleRepository.GetVersesBySearchingWords(words, bible, idBook, chapter, verse);
         if (dto == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         SearchWordsResponse response = GenerateSearchWordsResponse(dto, words);
 
-        return response.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return response.ToJsonResult();
     }
 
     /// <summary>
@@ -171,12 +171,12 @@ public class SearchController : BaseApiController
         var dto = BibleRepository.GetVersesBySearchingWords(words, bible, idBook, chapter, firstVerse, lastVerse);
         if (dto == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         SearchWordsResponse response = GenerateSearchWordsResponse(dto, words);
 
-        return response.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return response.ToJsonResult();
     }
 
     #region Private methods

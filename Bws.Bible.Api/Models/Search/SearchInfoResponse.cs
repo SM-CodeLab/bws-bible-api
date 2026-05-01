@@ -6,7 +6,7 @@ namespace Bws.Bible.Api.Models.Search
     /// <summary>
     /// Information sur l'API "/Search"
     /// </summary>
-    public class SearchInfoResponse
+    public class SearchInfoResponse : BaseApiResponse
     {
         /// <summary>
         /// Constructeur par défaut

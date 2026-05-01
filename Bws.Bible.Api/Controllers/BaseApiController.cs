@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -7,7 +8,6 @@ using Bws.Bible.Core.Repositories;
 using Bws.Bible.Core.Configuration;
 using Bws.Bible.Api.Routing;
 using Bws.Bible.Api.Models.Common;
-using System.Net;
 
 namespace Bws.Bible.Api.Controllers;
 
@@ -35,28 +35,12 @@ public abstract class BaseApiController : ControllerBase
     /// <summary>
     /// Générer une réponse générique lorsque les paramètres sont invalide (= erreur http 400)
     /// </summary>
-    protected JsonResult InvalidParameterResponse()
-    {
-        var response = new InvalidParameterResponse
-        {
-            Errors = new List<string> { "Bad request : Invalid parameters detected" },
-        };
-
-        return new JsonResult(response) { StatusCode = (int)HttpStatusCode.BadRequest };
-    }
+    protected JsonResult InvalidParameterResponse() => new InvalidParameterResponse().ToJsonResult();
 
     /// <summary>
     /// Générer une réponse générique lorsqu'aucune donnée n'a été trouvée (= erreur http 404)
     /// </summary>
-    protected JsonResult NoDataFoundResponse()
-    {
-        var response = new NotFoundResponse
-        {
-            Message = "No data found for your request"
-        };
-
-        return new JsonResult(response) { StatusCode = (int)HttpStatusCode.NotFound };
-    }
+    protected JsonResult NotFoundResponse() => new NotFoundResponse().ToJsonResult();
 
     /// <summary>
     /// Vérifier la validité d'un identifiant de Bible

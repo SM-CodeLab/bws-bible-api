@@ -12,7 +12,7 @@ using Bws.Bible.Core.Exceptions.Enums;
 using Bws.Bible.Api.Models.Explore;
 using Bws.Bible.Api.Models.Explore.Items;
 
-namespace Bws.Bible.Api.Controllers.Front;
+namespace Bws.Bible.Api.Controllers;
 
 /// <summary>
 /// Explorer la Bible
@@ -41,7 +41,7 @@ public class ExploreController : BaseApiController
         var bibles = BibleRepository.GetBibles(null, false);
         if (bibles == null || !bibles.Any())
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.Bibles = new List<BibleInfoItem>();
@@ -57,7 +57,7 @@ public class ExploreController : BaseApiController
                 GoToBible = ApiSettings.GenerateNavigationLinks ? new Uri(ApiBaseUri, $"{Request.Path.Value}/{bible.Id}").ToString() : null
             });
         }
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ public class ExploreController : BaseApiController
             dto = BibleRepository.GetBible(bible, false);
             if (dto == null)
             {
-                return NoDataFoundResponse();
+                return NotFoundResponse();
             }
         }
         catch (InfrastructureException e)
@@ -90,7 +90,7 @@ public class ExploreController : BaseApiController
             {
                 Logger.LogError($"BibleRepository.GetBible throws an InfrastructureException : [{e.ErrorCode}] {e.ErrorMessage}");
             }
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.Bible = new BibleItem()
@@ -116,7 +116,7 @@ public class ExploreController : BaseApiController
         );
         result.Navigation = ApiSettings.GenerateNavigationLinks ? BuildNavigationForGetBible(dto.Id) : null;
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ public class ExploreController : BaseApiController
         var dto = BibleRepository.GetBook(bible, idBook, false);
         if (dto == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.IdBible = bible;
@@ -153,7 +153,7 @@ public class ExploreController : BaseApiController
         };
         result.Navigation = ApiSettings.GenerateNavigationLinks ? BuildNavigationForGetBibleBook(bible, idBook, book) : null;
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public class ExploreController : BaseApiController
         var dto = BibleRepository.GetBook(bible, idBook, true);
         if (dto == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.IdBible = bible;
@@ -190,7 +190,7 @@ public class ExploreController : BaseApiController
         };
         result.Navigation = ApiSettings.GenerateNavigationLinks ? BuildNavigationForGetBibleBookChapter(bible, book, chapter, dto.CountChapters) : null;
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     /// <summary>
@@ -216,7 +216,7 @@ public class ExploreController : BaseApiController
         var dto = BibleRepository.GetVerses(bible, idBook, chapter, verse, verse);
         if (dto == null || !dto.Any())
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.IdBible = bible;
@@ -229,7 +229,7 @@ public class ExploreController : BaseApiController
         };
         result.Navigation = ApiSettings.GenerateNavigationLinks ? BuildNavigationForGetBibleVerse(bible, book, chapter, verse) : null;
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     /// <summary>
@@ -256,7 +256,7 @@ public class ExploreController : BaseApiController
         var dto = BibleRepository.GetVerses(bible, idBook, chapter, firstVerse, lastVerse);
         if (dto == null || !dto.Any())
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.IdBible = bible;
@@ -265,7 +265,7 @@ public class ExploreController : BaseApiController
         result.Verses = dto.Where(v => v.IdChapter == chapter).Select(v => new VerseItem() { IdVerse = v.IdVerse, Verse = v.Text }).ToList();
         result.Navigation = ApiSettings.GenerateNavigationLinks ? BuildNavigationForGetBibleVerses(bible, book, chapter, firstVerse, lastVerse) : null;
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     #region Build navigation private methods

@@ -6,7 +6,7 @@ namespace Bws.Bible.Api.Models.Compare;
 /// <summary>
 /// Information sur l'API "/Compare"
 /// </summary>
-public class CompareInfoResponse
+public class CompareInfoResponse : BaseApiResponse
 {
     /// <summary>
     /// Constructeur par défaut

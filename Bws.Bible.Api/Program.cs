@@ -138,8 +138,9 @@ app.UseSwaggerUI(c => {
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors();
-//app.UseMiddleware<BwsCorsMiddleware>();
+app.UseCors("ApiCorsPolicy");
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<ChronoMiddleware>();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health/live", new HealthCheckOptions

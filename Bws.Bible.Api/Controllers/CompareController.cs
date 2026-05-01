@@ -11,7 +11,7 @@ using Bws.Bible.Core.Domain;
 using Bws.Bible.Api.Models.Compare;
 using Bws.Bible.Api.Models.Compare.Items;
 
-namespace Bws.Bible.Api.Controllers.Front;
+namespace Bws.Bible.Api.Controllers;
 
 /// <summary>
 /// Comparer la Bible
@@ -39,7 +39,7 @@ public class CompareController : BaseApiController
 
         var response = new CompareInfoResponse(apiUrl, ApiSettings);
 
-        return new JsonResult(response);
+        return response.ToJsonResult();
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class CompareController : BaseApiController
 
             if (bibleAdto == null || bibleBdto == null)
             {
-                return NoDataFoundResponse();
+                return NotFoundResponse();
             }
         }
         catch (InfrastructureException e)
@@ -75,7 +75,7 @@ public class CompareController : BaseApiController
             {
                 Logger.LogError($"BibleRepository.GetBible throws an InfrastructureException : [{e.ErrorCode}] {e.ErrorMessage}");
             }
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.IdBibleA = bibleA;
@@ -128,7 +128,7 @@ public class CompareController : BaseApiController
             result.BibleComparison.BooksComparison.Add(bookComparison);
         }
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
 
@@ -154,7 +154,7 @@ public class CompareController : BaseApiController
         var dtoB = BibleRepository.GetBook(bibleB, idBook, true);
         if (dtoA == null || dtoB == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.IdBibleA = bibleA;
@@ -171,7 +171,7 @@ public class CompareController : BaseApiController
             CountWords = $"{countWordsIntoBookA} ({bibleA}) {GetOperatorForNumericComparison(countWordsIntoBookA, countWordsIntoBookB)} {countWordsIntoBookB} ({bibleB})",
         };
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     /// <summary>
@@ -197,7 +197,7 @@ public class CompareController : BaseApiController
         var dtoB = BibleRepository.GetBook(bibleB, idBook, true);
         if (dtoA == null || dtoB == null)
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
 
         result.IdBibleA = bibleA;
@@ -221,7 +221,7 @@ public class CompareController : BaseApiController
             result.Verses = GetVersesInterlinear(bibleA, bibleB, versesChapterA.ToList(), versesChapterB.ToList());
         }
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     /// <summary>
@@ -255,7 +255,7 @@ public class CompareController : BaseApiController
         var verseB = BibleRepository.GetVerses(bibleB, idBook, chapter, verse, verse);
         if (verseA == null || verseB == null || !verseA.Any() || !verseB.Any())
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
         int countWordsIntoVerseA = CountWordsIntoVerses(verseA);
         int countWordsIntoVerseB = CountWordsIntoVerses(verseB);
@@ -270,7 +270,7 @@ public class CompareController : BaseApiController
             result.Verses = GetVersesInterlinear(bibleA, bibleB, verseA, verseB);
         }
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
 
@@ -309,7 +309,7 @@ public class CompareController : BaseApiController
         var versesB = BibleRepository.GetVerses(bibleB, idBook, chapter, firstVerse, lastVerse);
         if (versesA == null || versesB == null || !versesA.Any() || !versesB.Any())
         {
-            return NoDataFoundResponse();
+            return NotFoundResponse();
         }
         int countWordsIntoVerseA = CountWordsIntoVerses(versesA);
         int countWordsIntoVerseB = CountWordsIntoVerses(versesB);
@@ -324,7 +324,7 @@ public class CompareController : BaseApiController
             result.Verses = GetVersesInterlinear(bibleA, bibleB, versesA, versesB);
         }
 
-        return result.ToJsonResult(ApiSettings.GenerateResponseTime);
+        return result.ToJsonResult();
     }
 
     #region Private methods
