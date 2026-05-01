@@ -47,6 +47,16 @@ static InfrastructureSettings GetInfrastructureSettings(IConfiguration configura
     };
 }
 
+static CorsSettings GetCorsSettings(IConfiguration configuration)
+{
+    return new CorsSettings()
+    {
+        AllowedOrigins = configuration.GetSection("Api:Cors:AllowedOrigins").Get<string[]>() ?? new[] { "*" },
+        AllowedMethods = configuration.GetSection("Api:Cors:AllowedMethods").Get<string[]>() ?? new[] { "GET" },
+        AllowedHeaders = configuration.GetSection("Api:Cors:AllowedHeaders").Get<string[]>() ?? new[] { "Content-Type" }
+    };
+}
+
 // Préparation du builder de l'application
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,15 +64,16 @@ var infrastructureSettings = GetInfrastructureSettings(builder.Configuration);
 var apiSettings = GetApiSettings(builder.Configuration);
 
 //Cross-Origin (CORS)
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("ApiCorsPolicy", builder =>
-//    {
-//        builder.WithOrigins("http://www.samuel-meyer.fr")
-//               .WithHeaders(Microsoft.Net.Http.Headers.HeaderNames.ContentType, "x-custom-header")
-//               .WithMethods("GET", "OPTIONS"); ;
-//    });
-//});
+var corsSettings = GetCorsSettings(builder.Configuration);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ApiCorsPolicy", policy =>
+    {
+        policy.WithOrigins(corsSettings.AllowedOrigins)
+              .WithMethods(corsSettings.AllowedMethods)
+              .WithHeaders(corsSettings.AllowedHeaders);
+    });
+});
 
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "liveness" }) // Liveness : Vérifie si l'api répond                                                                  
@@ -128,7 +139,7 @@ app.UseSwaggerUI(c => {
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors();
-app.UseMiddleware<BwsCorsMiddleware>();
+//app.UseMiddleware<BwsCorsMiddleware>();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health/live", new HealthCheckOptions
