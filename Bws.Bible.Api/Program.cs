@@ -82,7 +82,7 @@ builder.Services.AddHealthChecks()
 // Configuration des services (extrait de ConfigureServices)
 builder.Services.AddControllers()
     .AddJsonOptions(options => {
-        options.JsonSerializerOptions.IgnoreNullValues = true;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 

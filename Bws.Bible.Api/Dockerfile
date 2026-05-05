@@ -1,5 +1,5 @@
 ﻿# Récupération de l'image avec le SDK de base de Microsoft
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
 # Exposition des ports pour le trafic de la Web API
@@ -17,7 +17,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Génération de l'image docker
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT [ "dotnet", "Bws.Bible.Api.dll" ]
