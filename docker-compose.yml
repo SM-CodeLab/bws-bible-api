@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  bws-bible-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bws-bible-api
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+    volumes:
+      # Mount bible files from host for easy updates
+      - ./Bws.Bible.Infrastructure/Storage:/app/Storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - bible-network
+
+networks:
+  bible-network:
+    driver: bridge

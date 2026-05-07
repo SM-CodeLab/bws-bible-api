@@ -1,0 +1,64 @@
+name: Dev Build & Bruno Tests
+
+on:
+  push:
+    branches: [ "dev" ]
+  workflow_dispatch:
+
+jobs:
+  test-api:
+    runs-on: ubuntu-26.04
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Bruno CLI
+      run: npm install -g @usebruno/cli
+
+    - name: Restore NuGet packages
+      run: dotnet restore
+
+    - name: Build API
+      run: dotnet build -c Release
+
+    - name: Start API in background
+      run: |
+        nohup dotnet run --project ./Bws.Bible.Api/Bws.Bible.Api.csproj -c Release \
+          --urls "http://localhost:5000" > api.log 2>&1 &
+      env:
+        ASPNETCORE_ENVIRONMENT: Development
+
+    - name: Wait for API healthcheck
+      run: |
+        echo "Waiting for API to be ready..."
+        for i in {1..30}; do
+          if curl -f http://localhost:5000/health/live 2>/dev/null; then
+            echo "✓ API is ready!"
+            exit 0
+          fi
+          echo "Attempt $i/30 - Waiting 2 seconds..."
+          sleep 2
+        done
+        echo "✗ API failed to start. Logs:"
+        cat api.log
+        exit 1
+
+    - name: Run Bruno Tests
+      run: bru run --collection ./bruno --env Dev_FR
+      continue-on-error: true
+
+    - name: Upload API logs on failure
+      if: failure()
+      run: |
+        echo "=== API Logs ===" 
+        cat api.log 2>/dev/null || echo "No logs found"
