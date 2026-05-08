@@ -8,6 +8,15 @@ http:
   url: "{{apiUrl}}/explore/{{idBible}}/{{idBook}}"
   auth: inherit
 
+runtime:
+  assertions:
+    - expression: res.body.idBible
+      operator: eq
+      value: "{{idBible}}"
+    - expression: res.body.book.idBook
+      operator: eq
+      value: "{{idBook}}"
+
 settings:
   encodeUrl: true
   timeout: 0

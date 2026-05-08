@@ -1,8 +1,8 @@
-name: Dev
+name: Dev_FR
 color: "#2E8A54"
 variables:
   - name: apiUrl
-    value: https://localhost:5000
+    value: http://localhost:5000
   - name: idBible
     value: LSG
   - name: idBook
