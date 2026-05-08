@@ -23,5 +23,5 @@ public class VerseData
     /// <summary>
     /// Texte du verset
     /// </summary>
-    public string Text { get; set; }
+    public required string Text { get; set; }
 }

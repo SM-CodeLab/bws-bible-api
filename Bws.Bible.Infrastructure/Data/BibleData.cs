@@ -5,13 +5,13 @@
 /// </summary>
 public class BibleData : IDisposable
 {
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
-    public string Language { get; set; }
+    public string? Language { get; set; }
 
-    public string Translator { get; set; }
+    public string? Translator { get; set; }
 
     public short ReleaseYear { get; set; }
 

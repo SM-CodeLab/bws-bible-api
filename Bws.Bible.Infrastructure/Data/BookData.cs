@@ -13,7 +13,7 @@ public class BookData
     /// <summary>
     /// Titre du livre
     /// </summary>
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
     /// <summary>
     /// Données statistiques

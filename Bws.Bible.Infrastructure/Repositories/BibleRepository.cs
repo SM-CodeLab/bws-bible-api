@@ -247,7 +247,7 @@ public class BibleRepository : IBibleRepository
     {
         GoToLine(reader, 0);
 
-        string line = reader.ReadLine();
+        string? line = reader.ReadLine();
         if (!string.IsNullOrWhiteSpace(line))
         {
             string[] data = line.Split(_infrastructureSettings.DelimiterSeparatedValues);
@@ -264,7 +264,7 @@ public class BibleRepository : IBibleRepository
         byte index = 1;
         GoToLine(reader, index);
 
-        string line;
+        string? line;
         while (!string.IsNullOrWhiteSpace(line = reader.ReadLine()) && index <= 66)
         {
             string[] data = line.Split(_infrastructureSettings.DelimiterSeparatedValues);
@@ -284,7 +284,7 @@ public class BibleRepository : IBibleRepository
         byte index = 67;
         GoToLine(reader, index);
 
-        string line;
+        string? line;
         while (!string.IsNullOrWhiteSpace(line = reader.ReadLine()))
         {
             string[] data = line.Split(_infrastructureSettings.DelimiterSeparatedValues);
