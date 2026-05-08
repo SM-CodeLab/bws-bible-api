@@ -54,7 +54,7 @@ jobs:
         exit 1
 
     - name: Run Bruno Tests
-      run: bru run --collection ./bruno --env Dev_FR
+      run: bru run ./bruno --env Dev_FR
       continue-on-error: true
 
     - name: Upload API logs on failure
