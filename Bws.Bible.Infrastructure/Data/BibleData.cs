@@ -1,17 +1,19 @@
-﻿namespace Bws.Bible.Infrastructure.Data;
+﻿using Bws.Bible.Core.Exceptions;
+
+namespace Bws.Bible.Infrastructure.Data;
 
 /// <summary>
 /// Bible (Data Access Layer Object)
 /// </summary>
 public class BibleData : IDisposable
 {
-    public string? Id { get; set; }
+    public required string Id { get; set; }
 
-    public string? Name { get; set; }
+    public required string Name { get; set; }
 
-    public string? Language { get; set; }
+    public required string Language { get; set; }
 
-    public string? Translator { get; set; }
+    public required string Translator { get; set; }
 
     public short ReleaseYear { get; set; }
 

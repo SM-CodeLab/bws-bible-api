@@ -200,17 +200,29 @@ public class BibleRepository : IBibleRepository
 
         if (!File.Exists(bibleFilePath))
         {
-            throw new InfrastructureException() { ErrorCode = EInfrastructureErrorCode.LoadBibleHeader, ErrorMessage = $"Error loading bible header from {bibleFilePath}" };
+            throw new InfrastructureException()
+            { 
+                ErrorCode = EInfrastructureErrorCode.OpenBibleFile, 
+                ErrorMessage = $"Fichier introuvable {bibleFilePath}" 
+            };
         }
 
-        var bible = new BibleData();
-        bible.Id = Path.GetFileNameWithoutExtension(bibleFilePath);
+        string idBible = Path.GetFileNameWithoutExtension(bibleFilePath);
 
+        BibleData bible;
         using (StreamReader reader = new StreamReader(bibleFilePath, _defaultEncoding))
         {
-            ReadAndLoadBibleHeader(reader, bible);
-            return bible;
+            (string name, string language, string translator, short releaseYear) = ReadBibleHeader(reader);
+            bible = new BibleData()
+            {
+                Id = idBible,
+                Name = name,
+                Language = language,
+                Translator = translator,
+                ReleaseYear = releaseYear
+            };
         }
+        return bible;
     }
 
     //Chargement complet d'une Bible (lecture du fichier complet)
@@ -227,13 +239,21 @@ public class BibleRepository : IBibleRepository
             };
         }
 
-        var bible = new BibleData();
-        bible.Id = Path.GetFileNameWithoutExtension(bibleFilePath);
-        _logger.LogInformation($"Chargement de la Bible {bible.Id}");
+        string idBible = Path.GetFileNameWithoutExtension(bibleFilePath);
+        _logger.LogInformation($"Chargement de la Bible {idBible}");
 
         using (StreamReader reader = new StreamReader(bibleFilePath, _defaultEncoding))
         {
-            ReadAndLoadBibleHeader(reader, bible);
+            (string name, string language, string translator, short releaseYear) = ReadBibleHeader(reader);
+            var bible = new BibleData()
+            {
+                Id = idBible,
+                Name = name,
+                Language = language,
+                Translator = translator,
+                ReleaseYear = releaseYear
+            };
+
             ReadAndLoadBibleBooksList(reader, bible);
             ReadAndLoadBibleVerses(reader, bible);
             ComputeStatistics(bible);
@@ -243,7 +263,7 @@ public class BibleRepository : IBibleRepository
     }
 
     //Lit et charge en mémoire les informations d'en-tête de la Bible (index 0)
-    private void ReadAndLoadBibleHeader(StreamReader reader, BibleData bible)
+    private ( string name, string language, string translator, short releaseYear ) ReadBibleHeader(StreamReader reader)
     {
         GoToLine(reader, 0);
 
@@ -251,11 +271,18 @@ public class BibleRepository : IBibleRepository
         if (!string.IsNullOrWhiteSpace(line))
         {
             string[] data = line.Split(_infrastructureSettings.DelimiterSeparatedValues);
-            bible.Name = data[1];
-            bible.Language = data[2];
-            bible.Translator = data[3];
-            bible.ReleaseYear = short.Parse(data[4]);
+            string name = data[1];
+            string language = data[2];
+            string translator = data[3];
+            short releaseYear = short.Parse(data[4]);
+            return (name, language, translator, releaseYear);
         }
+
+        throw new InfrastructureException()
+        {
+            ErrorCode = EInfrastructureErrorCode.LoadBibleHeader,
+            ErrorMessage = "Erreur lors de la lecture de l'en-tête de la Bible"
+        };
     }
 
     //Lit et charge en mémoire les informations sur les livres de la Bible (index 1 à 66)

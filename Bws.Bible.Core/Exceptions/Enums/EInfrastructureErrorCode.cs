@@ -2,6 +2,7 @@
 
 public enum EInfrastructureErrorCode
 {
+    OpenBibleFile,
     LoadBibleFull,
     LoadBibleHeader
 }

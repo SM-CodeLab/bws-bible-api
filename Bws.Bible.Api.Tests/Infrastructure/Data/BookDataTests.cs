@@ -8,7 +8,7 @@ public class BookDataTests
     [Fact]
     public void TestBookDataConstructor()
     {
-        var bible = new BookData();
+        var bible = new BookData() { IdBook = 1, Title = "Genèse" };
 
         Assert.NotNull(bible.Statistics);
     }
