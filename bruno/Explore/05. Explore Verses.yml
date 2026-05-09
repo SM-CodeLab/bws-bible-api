@@ -1,0 +1,30 @@
+info:
+  name: 05. Explore Verses
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{apiUrl}}/explore/{{idBible}}/{{idBook}}/{{idChapter}}:1-10"
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.body.idBible
+      operator: eq
+      value: "{{idBible}}"
+    - expression: res.body.idBook
+      operator: eq
+      value: "{{idBook}}"
+    - expression: res.body.idChapter
+      operator: eq
+      value: "{{idChapter}}"
+    - expression: res.body.verses.length
+      operator: eq
+      value: "10"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,45 @@
+# Build artifacts
+bin/
+obj/
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# IDE and editor files
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation
+*.md
+README.md
+CONTRIBUTING.md
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Docker files (avoid recursion)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Environment files
+.env
+.env.local
+
+# Node modules (if any frontend tooling)
+node_modules/
+
+# Test files and results
+**/TestResults/
+**.trx
