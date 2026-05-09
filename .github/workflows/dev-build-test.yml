@@ -31,6 +31,9 @@ jobs:
     - name: Build API
       run: dotnet build -c Release
 
+    - name: Prepare Storage Link
+      run: ln -s ../Bws.Bible.Infrastructure/Storage ./Bws.Bible.Api/Storage
+
     - name: Start API in background
       run: |
         nohup dotnet run --project ./Bws.Bible.Api/Bws.Bible.Api.csproj -c Release \
@@ -54,7 +57,8 @@ jobs:
         exit 1
 
     - name: Run Bruno Tests
-      run: bru run ./bruno --env Dev_FR
+      working-directory: ./bruno
+      run: bru run --env Dev_FR
       continue-on-error: true
 
     - name: Upload API logs on failure
