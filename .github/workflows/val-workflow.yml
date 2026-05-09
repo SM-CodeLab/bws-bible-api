@@ -1,0 +1,108 @@
+name: Validation Workflow (Build, TU, TI, Deploy)
+
+on:
+  push:
+    branches: [ "val" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-unit-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '8.0'
+
+    - name: Restore NuGet packages
+      run: dotnet restore
+
+    - name: Build API
+      run: dotnet build -c Release
+
+    - name: Run Unit Tests
+      run: dotnet test ./Bws.Bible.Api.Tests/Bws.Bible.Api.Tests.csproj --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v7
+      with:
+        name: api-build-output
+        path: ./Bws.Bible.Api/bin/Release/net8.0/
+
+
+  run-integration-tests:
+    needs: build-and-unit-test # Ce job dépend du succès de 'build-and-unit-test'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v6 # Chaque job commence avec un nouveau runner, donc checkout est nécessaire
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '8.0'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: '24'
+
+    - name: Install Bruno CLI
+      run: npm install -g @usebruno/cli
+
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v8
+      with:
+        name: api-build-output
+        path: ./Bws.Bible.Api/bin/Release/net8.0/ # Download to the correct relative path for dotnet run
+
+    - name: Copy Storage Files for API
+      # Copie du dossier Storage depuis l'emplacement du code source vers le répertoire où l'API s'attendra à le trouver lors de son exécution.
+      run: cp -r ./Bws.Bible.Infrastructure/Storage ./Bws.Bible.Api/bin/Release/net8.0/Storage
+      
+    - name: Start API in background
+      run: |
+        nohup dotnet Bws.Bible.Api.dll --urls "http://localhost:5000" > api.log 2>&1 &
+      working-directory: ./Bws.Bible.Api/bin/Release/net8.0/ # Run from the output directory
+      env:
+        ASPNETCORE_ENVIRONMENT: Release
+
+    - name: Wait for API healthcheck
+      working-directory: ./Bws.Bible.Api/bin/Release/net8.0/
+      run: |
+        echo "Waiting for API to be ready..."
+        for i in {1..30}; do
+          if curl -f http://localhost:5000/health/live 2>/dev/null; then
+            echo "✓ API is ready!"
+            exit 0
+          fi
+          echo "Attempt $i/30 - Waiting 2 seconds..."
+          sleep 2
+        done
+        echo "✗ API failed to start. Logs:"
+        cat api.log
+        exit 1
+
+    - name: Run Bruno Tests
+      working-directory: ./bruno
+      run: bru run --env Dev_FR
+      # continue-on-error: true # Retiré pour que le workflow échoue en cas de test Bruno échoué
+
+    - name: Upload API logs on failure
+      if: failure()
+      run: |
+        echo "=== API Logs ===" 
+        cat api.log 2>/dev/null || echo "No logs found"
+
+  deploy-to-val :
+    needs: run-integration-tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deployment to Validation Environment (Under Development)
+      run: |
+        echo "--- Déploiement vers l'environnement de validation (en cours de développement) ---"
+        echo "Ce job est un placeholder. Les étapes de déploiement réelles seront ajoutées ici."
+        echo "Actuellement, il vérifie simplement que les jobs précédents ont réussi."
