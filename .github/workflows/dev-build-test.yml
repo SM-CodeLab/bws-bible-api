@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '8.0'
 
@@ -27,7 +27,7 @@ jobs:
       run: dotnet test ./Bws.Bible.Api.Tests/Bws.Bible.Api.Tests.csproj --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" --results-directory ./coverage
 
     - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: api-build-output
         path: ./Bws.Bible.Api/bin/Release/net8.0/
@@ -38,15 +38,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4 # Chaque job commence avec un nouveau runner, donc checkout est nécessaire
+    - uses: actions/checkout@v5 # Chaque job commence avec un nouveau runner, donc checkout est nécessaire
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '8.0'
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: '18'
 
@@ -54,7 +54,7 @@ jobs:
       run: npm install -g @usebruno/cli
 
     - name: Download Build Artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: api-build-output
         path: ./Bws.Bible.Api/bin/Release/net8.0/ # Download to the correct relative path for dotnet run
