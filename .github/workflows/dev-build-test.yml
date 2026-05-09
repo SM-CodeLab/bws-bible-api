@@ -6,11 +6,41 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-api:
+  build-and-unit-test:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0'
+
+    - name: Restore NuGet packages
+      run: dotnet restore
+
+    - name: Build API
+      run: dotnet build -c Release
+
+    - name: Run Unit Tests
+      run: dotnet test ./Bws.Bible.Api.Tests/Bws.Bible.Api.Tests.csproj --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-build-output
+        path: |
+          ./Bws.Bible.Api/bin/Release/net8.0/
+          ./Bws.Bible.Infrastructure/Storage/ # Upload the storage files as well to be available for integration tests
+
+
+  run-integration-tests:
+    needs: build-and-unit-test # Ce job dépend du succès de 'build-and-unit-test'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4 # Chaque job commence avec un nouveau runner, donc checkout est nécessaire
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -25,22 +55,23 @@ jobs:
     - name: Install Bruno CLI
       run: npm install -g @usebruno/cli
 
-    - name: Restore NuGet packages
-      run: dotnet restore
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: api-build-output
+        path: ./Bws.Bible.Api/bin/Release/net8.0/ # Download to the correct relative path for dotnet run
 
-    - name: Build API
-      run: dotnet build -c Release
+    - name: Copy Storage Files for API
+      # Note: The storage files are downloaded as part of the artifact, so we might need to adjust the path or copy them 
+      # For simplicity, if Storage is uploaded as part of the artifact, ensure the path for linking is correct relative to where it was downloaded.
+      # Assuming the storage files are downloaded into `Bws.Bible.Api/bin/Release/net8.0/Storage`
+      run: cp -r ./Bws.Bible.Api/bin/Release/net8.0/Storage ./Bws.Bible.Api/Storage
 
-    - name: Run Unit Tests
-      run: dotnet test ./Bws.Bible.Api.Tests/Bws.Bible.Api.Tests.csproj --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" --results-directory ./coverage
-
-    - name: Prepare Storage Link
-      run: ln -s ../Bws.Bible.Infrastructure/Storage ./Bws.Bible.Api/Storage
 
     - name: Start API in background
       run: |
-        nohup dotnet run --project ./Bws.Bible.Api/Bws.Bible.Api.csproj -c Release \
-          --urls "http://localhost:5000" > api.log 2>&1 &
+        nohup dotnet Bws.Bible.Api.dll --urls "http://localhost:5000" > api.log 2>&1 &
+      working-directory: ./Bws.Bible.Api/bin/Release/net8.0/ # Run from the output directory
       env:
         ASPNETCORE_ENVIRONMENT: Development
 
@@ -62,7 +93,7 @@ jobs:
     - name: Run Bruno Tests
       working-directory: ./bruno
       run: bru run --env Dev_FR
-      #continue-on-error: true
+      # continue-on-error: true # Retiré pour que le workflow échoue en cas de test Bruno échoué
 
     - name: Upload API logs on failure
       if: failure()
