@@ -30,9 +30,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: api-build-output
-        path: |
-          ./Bws.Bible.Api/bin/Release/net8.0/
-          ./Bws.Bible.Infrastructure/Storage/ # Upload the storage files as well to be available for integration tests
+        path: ./Bws.Bible.Api/bin/Release/net8.0/
 
 
   run-integration-tests:
@@ -62,10 +60,8 @@ jobs:
         path: ./Bws.Bible.Api/bin/Release/net8.0/ # Download to the correct relative path for dotnet run
 
     - name: Copy Storage Files for API
-      # Copie le dossier Storage depuis l'emplacement du code source (après le checkout)
-      # vers le répertoire où l'API s'attendra à le trouver lors de son exécution.
+      # Copie du dossier Storage depuis l'emplacement du code source vers le répertoire où l'API s'attendra à le trouver lors de son exécution.
       run: cp -r ./Bws.Bible.Infrastructure/Storage ./Bws.Bible.Api/bin/Release/net8.0/Storage
-
 
     - name: Start API in background
       run: |
@@ -75,6 +71,7 @@ jobs:
         ASPNETCORE_ENVIRONMENT: Development
 
     - name: Wait for API healthcheck
+      working-directory: ./Bws.Bible.Api/bin/Release/net8.0/
       run: |
         echo "Waiting for API to be ready..."
         for i in {1..30}; do
