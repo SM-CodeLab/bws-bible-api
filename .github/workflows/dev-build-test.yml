@@ -31,6 +31,9 @@ jobs:
     - name: Build API
       run: dotnet build -c Release
 
+    - name: Run Unit Tests
+      run: dotnet test ./Bws.Bible.Api.Tests/Bws.Bible.Api.Tests.csproj --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" --results-directory ./coverage
+
     - name: Prepare Storage Link
       run: ln -s ../Bws.Bible.Infrastructure/Storage ./Bws.Bible.Api/Storage
 
@@ -59,7 +62,7 @@ jobs:
     - name: Run Bruno Tests
       working-directory: ./bruno
       run: bru run --env Dev_FR
-      continue-on-error: true
+      #continue-on-error: true
 
     - name: Upload API logs on failure
       if: failure()
