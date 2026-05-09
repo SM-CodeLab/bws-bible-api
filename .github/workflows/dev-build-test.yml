@@ -62,10 +62,9 @@ jobs:
         path: ./Bws.Bible.Api/bin/Release/net8.0/ # Download to the correct relative path for dotnet run
 
     - name: Copy Storage Files for API
-      # Note: The storage files are downloaded as part of the artifact, so we might need to adjust the path or copy them 
-      # For simplicity, if Storage is uploaded as part of the artifact, ensure the path for linking is correct relative to where it was downloaded.
-      # Assuming the storage files are downloaded into `Bws.Bible.Api/bin/Release/net8.0/Storage`
-      run: cp -r ./Bws.Bible.Api/bin/Release/net8.0/Storage ./Bws.Bible.Api/Storage
+      # Copie le dossier Storage depuis l'emplacement du code source (après le checkout)
+      # vers le répertoire où l'API s'attendra à le trouver lors de son exécution.
+      run: cp -r ./Bws.Bible.Infrastructure/Storage ./Bws.Bible.Api/bin/Release/net8.0/Storage
 
 
     - name: Start API in background
