@@ -10,12 +10,12 @@ public record BibleDto
     /// <summary>
     /// Identifiant de la Bible
     /// </summary>
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     /// <summary>
     /// Nom ou titre de la Bible
     /// </summary>
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     /// <summary>
     /// Langue
@@ -25,7 +25,7 @@ public record BibleDto
     /// <summary>
     /// Traducteur (personne physique)
     /// </summary>
-    public string Translator { get; init; }
+    public required string Translator { get; init; }
 
     /// <summary>
     /// Date de parution, de publication

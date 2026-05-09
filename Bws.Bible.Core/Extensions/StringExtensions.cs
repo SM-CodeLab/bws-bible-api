@@ -13,7 +13,12 @@ public static class StringExtensions
     /// </summary>
     public static string TrimEnd(this string input, string expressionToRemove, StringComparison comparisonType)
     {
-        if (input != null && expressionToRemove != null && input.EndsWith(expressionToRemove, comparisonType))
+        if (input == null)
+        {
+            return string.Empty;
+        }
+
+        if (expressionToRemove != null && input.EndsWith(expressionToRemove, comparisonType))
         {
             return input.Substring(0, input.Length - expressionToRemove.Length);
         }

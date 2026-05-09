@@ -23,5 +23,5 @@ public record VerseDto
     /// <summary>
     /// Texte du verset
     /// </summary>
-    public string Text { get; init; }
+    public required string Text { get; init; }
 }

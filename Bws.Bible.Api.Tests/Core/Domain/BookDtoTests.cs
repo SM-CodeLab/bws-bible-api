@@ -8,7 +8,7 @@ public class BookDtoTests
     [Fact]
     public void TestBookDtoConstructor()
     {
-        var book = new BookDto();
+        var book = new BookDto() { Title = "Matthieu" };
 
         Assert.NotNull(book.Verses);
         Assert.Empty(book.Verses);

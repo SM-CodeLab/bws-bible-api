@@ -13,7 +13,7 @@ public record BookDto
     /// <summary>
     /// Titre du livre
     /// </summary>
-    public string Title { get; init; }
+    public required string Title { get; init; }
 
     /// <summary>
     /// Versets du livre
