@@ -24,6 +24,12 @@
     <None Update="Storage\SBLGNT.bible">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Storage\VBL.bible">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Storage\WEB.bible">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Storage\WLC.bible">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

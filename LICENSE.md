@@ -26,7 +26,7 @@ SOFTWARE.
 
 ## 2. Données et contenus : Licence Creative Commons BY-NC-ND
 
-Les fichiers de données (*.bible, *.md) de ce projet sont soumis à la **[licence CC BY-NC-ND 3.0 FR](https://creativecommons.org/licenses/by-nc-nd/3.0/fr/legalcode)**.
+Les fichiers de données (*.bible, *.md) de ce projet sont soumis à la **[licence CC BY-NC-ND 3.0 FR](https://creativecommons.org/licenses/by-nc-nd/3.0/fr/legalcode)**, à l'exception de `Storage/VBL.bible` (voir « Exception » plus bas).
 
 **BY-NC-ND** = Attribution (BY) + Pas d’Utilisation Commerciale (NC) + Pas de Modification (ND)  : Le titulaire des droits autorise l’utilisation de l’œuvre originale à des fins non commerciales, mais n’autorise pas la création d’œuvres dérivés.
 
@@ -43,6 +43,17 @@ Les fichiers de données (*.bible, *.md) de ce projet sont soumis à la **[licen
 - **Pas d’Utilisation Commerciale** - Vous n'êtes pas autorisé à faire un usage commercial de cette Oeuvre, tout ou partie du matériel la composant.
 - **Pas de modifications** - Dans le cas où vous effectuez un remix, que vous transformez, ou créez à partir du matériel composant l'Oeuvre originale, vous n'êtes pas autorisé à distribuer ou mettre à disposition l'Oeuvre modifiée.
 - **Pas de restrictions complémentaires** - Vous n'êtes pas autorisé à appliquer des conditions légales ou des mesures techniques qui restreindraient légalement autrui à utiliser l'Oeuvre dans les conditions décrites par la licence.
+
+
+### Exception : `VBL.bible` (CC BY-SA 4.0)
+
+Le fichier `Storage/VBL.bible` (*Versión Biblia Libre*) **n'est pas** soumis à la licence CC BY-NC-ND du projet. Il reste sous la licence **[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.fr)** (Attribution - Partage dans les mêmes conditions 4.0 International), qui est celle de l'œuvre originale.
+
+- **Œuvre originale :** *Versión Biblia Libre*, © 2018-2020 Jonathan Gallagher et Shelly Barrios de Avila, publiée par Free Bible Ministry et diffusée par [eBible.org](https://ebible.org/find/details.php?id=spavbl).
+- **Adaptation :** `VBL.bible` est une conversion de ce texte au format du projet. Les modifications apportées sont détaillées dans `VBL.md`. Les auteurs de l'œuvre originale ne cautionnent pas nécessairement ces modifications.
+- **Conditions :** vous pouvez partager et adapter ce fichier, y compris à des fins commerciales, à condition de créditer l'œuvre originale, d'indiquer les modifications effectuées et de diffuser toute adaptation sous la même licence CC BY-SA 4.0.
+- **Portée :** l'exception ne concerne que `VBL.bible`. Tous les autres fichiers de données (y compris `VBL.md`) restent soumis à la licence CC BY-NC-ND 3.0 FR.
+- **Clause d'Inaltérabilité Divine :** la section 3 ci-dessous reste un engagement moral. Elle ne restreint pas les droits que la licence CC BY-SA 4.0 accorde sur ce fichier.
 
 
 ## 3. Clause d'Inaltérabilité Divine
