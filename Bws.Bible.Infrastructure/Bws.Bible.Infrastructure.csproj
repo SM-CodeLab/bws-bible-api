@@ -15,10 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Storage\ASV.bible">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Storage\KJV.bible">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Storage\LSG.bible">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Storage\OST.bible">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Storage\RV1909.bible">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Storage\SBLGNT.bible">
